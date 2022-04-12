@@ -1,0 +1,243 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Tech task forum",
+        "description": "Api documentation Tech task forum",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/",
+            "description": "OpenApi host"
+        }
+    ],
+    "paths": {
+        "api": {},
+        "/api/v1/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User login.",
+                "operationId": "login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AuthUserRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login completed successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error."
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User registration.",
+                "description": "Create user.",
+                "operationId": "register",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateUserRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Registration completed successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error."
+                    }
+                }
+            }
+        },
+        "/api/v1/info": {
+            "get": {
+                "tags": [
+                    "Info"
+                ],
+                "summary": "Check api.",
+                "description": "After the request, textual information about the success of the api will be received.",
+                "operationId": "ec9db326d2ddb70f4348591d54be4278",
+                "responses": {
+                    "200": {
+                        "description": "API is working."
+                    }
+                }
+            }
+        },
+        "/api/v1/posts": {
+            "post": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Create post.",
+                "operationId": "f558d72008beb309f48d596c17cb6572",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreatePostRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Post created successfuly."
+                    },
+                    "422": {
+                        "description": "Validation error."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "CreatePostRequest": {
+                "title": "Create post request.",
+                "description": "Class CreatePostRequest.",
+                "required": [
+                    "title",
+                    "text"
+                ],
+                "properties": {
+                    "title": {
+                        "description": "Title.",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "text": {
+                        "description": "The text of the problem.",
+                        "type": "string",
+                        "maxLength": 3000
+                    },
+                    "image": {
+                        "title": "Post image",
+                        "type": "file",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "AuthUserRequest": {
+                "title": "User registration request.",
+                "description": "Class AuthUserRequest.",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "description": "Email.",
+                        "type": "string",
+                        "example": "test@gmail.com"
+                    },
+                    "password": {
+                        "description": "Password.",
+                        "type": "string",
+                        "example": "12345678"
+                    }
+                },
+                "type": "object"
+            },
+            "CreateUserRequest": {
+                "title": "User registration request.",
+                "description": "Class CreateUserRequest.",
+                "required": [
+                    "name",
+                    "email",
+                    "password",
+                    "password_confirmation"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Username.",
+                        "type": "string",
+                        "example": "TestUserName"
+                    },
+                    "email": {
+                        "description": "Email.",
+                        "type": "string",
+                        "example": "test@gmail.com"
+                    },
+                    "password": {
+                        "description": "Password.",
+                        "type": "string",
+                        "example": "12345678"
+                    },
+                    "password_confirmation": {
+                        "description": "Password confirmation.",
+                        "type": "string",
+                        "example": "12345678"
+                    }
+                },
+                "type": "object"
+            },
+            "AuthResource": {
+                "title": "Auth resourse",
+                "description": "Class AuthResource.",
+                "properties": {
+                    "token": {
+                        "title": "Token",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Authorization by login and password with obtaining an authorization token.",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            },
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "externalDocs": {
+        "description": "Find out more about Swagger",
+        "url": "https://swagger.io"
+    }
+}
